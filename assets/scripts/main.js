@@ -1,7 +1,25 @@
 (() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const perks = [...document.querySelectorAll('.perks-section .btn-perk')];
+    const perks = [...document.querySelectorAll('.perks-section .btn-perk')],
+        contactForm = document.querySelector('#contact'),
+        sendBtn = document.querySelector('#sendBtn');
+
+    const validateFields = (fields = []) => {
+        for (const field of fields) {
+            if (!contactForm[field].value) {
+                window.alert(`Por favor ingresa un ${field}`);
+                return false;
+            }
+
+            if (field === 'correo' && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(contactForm[field].value)) {
+                window.alert(`Por favor ingresa un ${field} válido`);
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
         // Challenge mark
@@ -35,7 +53,7 @@
             duration: 2,
             ease: 'easeInOut',
         });
-        
+
 
         // Grid
         gsap.from('.grid > div', {
@@ -55,11 +73,22 @@
             perk.addEventListener('click', e => {
                 const container = e.target.parentElement;
 
-                if(container.classList.contains('open'))
+                if (container.classList.contains('open'))
                     return container.classList.remove('open');
 
                 return container.classList.add('open');
             });
+        });
+
+        sendBtn.addEventListener('click', e => {
+            e.preventDefault();
+
+            if (!validateFields(['nombre', 'telefono', 'correo', 'mensaje'])) return;
+
+            const output = `¡Hola! Me interesa registrarme en el Reto 21 Días\nNombre: ${contactForm.nombre.value}\nCorreo: ${contactForm.correo.value}\nTeléfono: ${contactForm.telefono.value}\nMensaje: ${contactForm.mensaje.value}`,
+                url = `https://web.whatsapp.com/send?phone=5213331279526&text=${output}`;
+
+            window.open(url.replaceAll('\n', '%0A'), '_blank');
         });
     });
 })();
