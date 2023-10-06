@@ -86,7 +86,7 @@
             if (!validateFields(['nombre', 'telefono', 'correo', 'mensaje'])) return;
 
             const output = `¡Hola! Me interesa registrarme en el Reto 21 Días\nNombre: ${contactForm.nombre.value}\nCorreo: ${contactForm.correo.value}\nTeléfono: ${contactForm.telefono.value}\nMensaje: ${contactForm.mensaje.value}`,
-                url = `https://web.whatsapp.com/send?phone=5213331279526&text=${output}`;
+                url = `https://api.whatsapp.com/send?phone=5213331279526&text=${output}`;
 
             window.open(url.replaceAll('\n', '%0A'), '_blank');
         });
